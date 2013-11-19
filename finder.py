@@ -1,5 +1,6 @@
 import os
 import string
+import pprint
 
 #This script will discover how many times each command specified in
 #comands.cfg are used in the test suite
@@ -23,6 +24,20 @@ for line in commands_file:
 
 print command_dict
 
+# after some anaylisis, these are the options for things that come after
+# the command names, with the evalition of good or no good
+#
+# `  6 		yes
+# "  4		yes
+# '  20		yes
+# )  9		yes
+# \n 77		yes
+# 1  1		nope
+# 0  6		nope
+# 2  1		nope
+# ;  3		yes
+# _  466	nope
+
 character_dict = dict()
 
 #return 1 if this command is in the line, 0 otherwise
@@ -43,7 +58,10 @@ def command_count(command, line):
 	if character_after_command in string.ascii_letters:
 		return 0
 	#now we need to look at these
-	#print character_after_command + '|'
+	if character_after_command in  character_dict:
+		character_dict[character_after_command] = character_dict[character_after_command] + 1
+	else:
+		character_dict[character_after_command] = 1
 	return 0
 
 
@@ -59,3 +77,9 @@ for root, dirs, files in os.walk('usr/src/test/zfs-tests'):
 					command_dict[command] = command_dict[command] + count
 
 print command_dict
+pprinter = pprint.PrettyPrinter()
+print "\n\n"
+for character in character_dict:
+	#print character
+	print character + '  ' +  str(character_dict[character])
+#pprinter.pprint(character_dict)
