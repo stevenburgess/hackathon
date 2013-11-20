@@ -47,7 +47,10 @@ for root, dirs, files in os.walk('usr/src/test/zfs-tests'):
 					count = command_count(command, line)
 					command_dict[command] = command_dict[command] + count
 
-print "\n\n"
-pad_number = 15
-for command in command_dict:
-	print command.ljust(pad_number) + str(command_dict[command]).rjust(3)
+#hooray stack overflow!
+from operator import itemgetter
+sorted_dict = sorted(command_dict.items(), key=itemgetter(1))
+
+#go through the now sorted list and print it
+for command,count in sorted_dict:
+	print command.ljust(15) + str(count).rjust(3)
