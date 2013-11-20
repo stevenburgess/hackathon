@@ -20,8 +20,6 @@ for line in commands_file:
 		command_name = '$' + command_name
 		command_dict[command_name] = 0
 
-print command_dict
-
 #return 1 if this command is in the line, 0 otherwise
 def command_count(command, line):
 	#get the character directly after the command to see that it is
